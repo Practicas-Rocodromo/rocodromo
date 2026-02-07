@@ -48,13 +48,6 @@
                       <fx:include source="reservas.fxml" />
                   </content>
               </Tab>
-              <Tab text="Ciudades">
-                  <content>
-                      <fx:include source="ciudades.fxml" />
-                  </content>
-
-
-              </Tab>
           </tabs>
       </TabPane>
 
