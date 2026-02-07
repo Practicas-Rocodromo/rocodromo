@@ -4,16 +4,19 @@ import com.gbjoanna.rocodromo.Util.FileData;
 import com.gbjoanna.rocodromo.models.Usuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 
-public class UsuarioController {
+public class UsuarioController implements Initializable {
 
     private ArrayList<Usuario> UsuarioList;
 
@@ -87,6 +90,9 @@ public class UsuarioController {
             return;
         }
 
+        Usuario usuario = new Usuario(nombre, apellidos, telefono, email, dni);
+        UsuarioList.add(usuario);
+
         saveFileAndRefresh();
 
         limpiaDatos();
@@ -122,9 +128,19 @@ public class UsuarioController {
         email = textfieldemail.getText();
         dni = textfielddni.getText();
 
-        if (!dni.matches("d{8}[A-Za-z]")) {
+        if (!dni.matches("\\d{8}[A-Za-z]")) {
             labelaviso.setText("El DNI introducido es erróneo");
             return;
+        }
+
+        for (Usuario usuarionombre : UsuarioList) {
+            if (usuarionombre.getNombre().equals(textfieldnombre.getText())) {
+                usuarionombre.setNombre(nombre);
+                usuarionombre.setApellidos(apellidos);
+                usuarionombre.setTelefono(telefono);
+                usuarionombre.setEmail(email);
+                usuarionombre.setDni(dni);
+            }
         }
 
         saveFileAndRefresh();
@@ -161,8 +177,6 @@ public class UsuarioController {
     }
 
     private void saveFileAndRefresh() {
-        Usuario usuario = new Usuario(nombre, apellidos, telefono, email, dni);
-        UsuarioList.add(usuario);
         FileData.saveFile(UsuarioList, FileData.USUARIOS_DAT);
         UsuarioList = FileData.loadFile(FileData.USUARIOS_DAT);
     }
@@ -195,5 +209,10 @@ public class UsuarioController {
         for (Usuario usuarionombre: UsuarioList) {
             listviewusuarios.getItems().add(usuarionombre.getNombre());
         }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        refreshListView(UsuarioList);
     }
 }
