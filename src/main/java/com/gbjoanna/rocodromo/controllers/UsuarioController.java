@@ -4,15 +4,13 @@ import com.gbjoanna.rocodromo.Util.FileData;
 import com.gbjoanna.rocodromo.models.Usuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import org.w3c.dom.events.MouseEvent;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Optional;
 
 
 public class UsuarioController {
@@ -52,7 +50,7 @@ public class UsuarioController {
     @FXML
     private TextField textfielddni;
     @FXML
-    private ListView<String> listviewusuarios;   //TODO AQUI TENGO QUE PONER "LISTVIEW<STRING>"???????????????
+    private ListView<String> listviewusuarios;
     @FXML
     private Button buttonmodificar;
     @FXML
@@ -84,7 +82,7 @@ public class UsuarioController {
         email = textfieldemail.getText();
         dni = textfielddni.getText();
 
-        if (!dni.matches("d{8}[A-Za-z]")) {
+        if (!dni.matches("\\d{8}[A-Za-z]")) {
             labelaviso.setText("El DNI introducido es erróneo");
             return;
         }
@@ -92,16 +90,17 @@ public class UsuarioController {
         saveFileAndRefresh();
 
         limpiaDatos();
+
+        refreshListView(UsuarioList);
     }
 
     @FXML
-    public void clicarlistview(MouseEvent event) {
+    protected void clicarlistview(MouseEvent event) {
 
-        limpiaDatos(); //TODO AQUI BIEN??????????????????????
+        limpiaDatos();
 
         for (Usuario usuarionombre: UsuarioList) {
             if (usuarionombre.getNombre().equals(listviewusuarios.getSelectionModel().getSelectedItem())) {
-                //TODO PORQUE ME DICE EL EQUALS INCONVERTIBLE TYPES BETWEEN OBJECTS STRINGS AND OBSERVABLE LIST?????????
                 showDataInField(usuarionombre.getNombre());
                 break;
 
@@ -131,17 +130,39 @@ public class UsuarioController {
         saveFileAndRefresh();
 
         limpiaDatos();
+
+        refreshListView(UsuarioList);
     }
 
     @FXML
     protected void oneliminar(ActionEvent event) {
 
-        var nNombre = textfieldnombre.getText();
-        //for (Usuario usuarionombre : usua)
-        //TODO limpiaDatos al final
+        var usuario = textfieldnombre.getText();
+        for (Usuario usuarionombre : UsuarioList) {
+            if (usuario.equals(usuarionombre.getNombre())) {
+                Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+                alerta.setTitle("Borrado de datos");
+                alerta.setContentText("El borrado será permanente. ¿Quieres continuar?");
+                Optional<ButtonType> opcion = alerta.showAndWait();
+                if (opcion.isPresent() && opcion.get() == ButtonType.OK) {
+                    UsuarioList.remove(usuarionombre);
+                    labelaviso.setText("El usuario se ha borrado correctamente");
+                    refreshListView(UsuarioList);
+                    saveFileAndRefresh();
+                    limpiaDatos();
+                    break;
+                } else {
+                    labelaviso.setText("La operación ha sido cancelada");
+                    limpiaDatos();
+                    break;
+                }
+            }
+        }
     }
 
     private void saveFileAndRefresh() {
+        Usuario usuario = new Usuario(nombre, apellidos, telefono, email, dni);
+        UsuarioList.add(usuario);
         FileData.saveFile(UsuarioList, FileData.USUARIOS_DAT);
         UsuarioList = FileData.loadFile(FileData.USUARIOS_DAT);
     }
@@ -166,5 +187,13 @@ public class UsuarioController {
         textfieldtelefono.setText("");
         textfieldemail.setText("");
         textfielddni.setText("");
+    }
+
+    private void refreshListView(ArrayList<Usuario> UsuarioList) {
+
+        listviewusuarios.getItems().clear();
+        for (Usuario usuarionombre: UsuarioList) {
+            listviewusuarios.getItems().add(usuarionombre.getNombre());
+        }
     }
 }
