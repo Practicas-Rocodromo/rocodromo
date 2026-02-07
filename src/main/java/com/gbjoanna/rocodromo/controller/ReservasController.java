@@ -11,6 +11,7 @@ import org.w3c.dom.events.MouseEvent;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.rmi.server.RemoteServer;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,9 +49,9 @@ public class ReservasController {
     @FXML
     private TextField textfieldnumreserva;
     @FXML
-    private ComboBox<String> comboxestado;
+    private TextField textfielestado;
     @FXML
-    private ComboBox<String> comboxpago;
+    private TextField textfieldtipopago;
     @FXML
     private DatePicker datepickerfecha;
     @FXML
@@ -140,23 +141,7 @@ public class ReservasController {
             }
         }
     }
- // ver checkbox
 
-    @FXML
-    protected  void onShowingDeviceType(Event event) {
-        ObservableList<String> dataObservableList = null;
-        fillComboBox(comboxestado, dataObservableList, listEstadoReserva);
-    }
-
-    @FXML
-    protected  void onShowinPago(Event event) {
-        ObservableList<String> dataObservableList = null;
-        fillComboBox(comboxpago, dataObservableList, listEstadoReserva);
-    }
-
-    public static void fillComboBox(ComboBox<String> comboBox, ObservableList<String> infoCombo, ArrayList<String> listEstadoReserva) {
-        comboBox.setItems(infoCombo);
-    }
     /// //////
     // Check datos
     private boolean checkFields() {
@@ -175,10 +160,10 @@ public class ReservasController {
         precio = Float.parseFloat(textfieldprecio.getText());
         fechaReserva = datepickerfecha.getValue();
         nReserva = textfieldnumreserva.getText();
-        estado = comboxestado.getValue().toString();
-        tipoPago = comboxpago.getValue().toString();
+        estado = textfielestado.getText();
+        tipoPago = textfieldtipopago.getText();
 
-        if (!nReserva.matches("d{4}[A-Za-z]")) {
+        if (!nReserva.matches("\\d{4}[A-Za-z]")) {
             labelAviso.setText("El código introducido es erróneo");
             return false;
         }
@@ -188,6 +173,8 @@ public class ReservasController {
 
     // Guardar datos en fichero
     private void saveFileRefreshReservasList() {
+        Reserva reserva = new Reserva(precio,nReserva,fechaReserva,estado,tipoPago);
+        reservaList.add(reserva);
         FileData.saveFile(reservaList, FileData.RESERVAS_DAT);
         reservaList = FileData.loadFile(FileData.RESERVAS_DAT);
     }
@@ -198,8 +185,8 @@ public class ReservasController {
             // pintar fields
             textfieldprecio.setText(Float.toString(reserva.getPrecio()));
             textfieldnumreserva.setText(reserva.getnReserva());
-            comboxestado.setValue(reserva.getEstado());
-            comboxpago.setValue(reserva.getTipoPago());
+            textfielestado.setText(reserva.getEstado());
+            textfieldtipopago.setText(reserva.getTipoPago());
             datepickerfecha.setValue(reserva.getFechaReserva());
         }
     }
@@ -207,8 +194,8 @@ public class ReservasController {
     private  void clearData(){
         textfieldprecio.setText("");
         textfieldnumreserva.setText("");
-        comboxestado.setValue(null);
-        comboxpago.setValue(null);
+        textfielestado.setText("");
+        textfieldtipopago.setText("");
         datepickerfecha.setValue(null);
     }
 

@@ -28,7 +28,7 @@
       <CheckBox fx:id="checkboxcompleta" layoutX="123.0" layoutY="236.0" mnemonicParsing="false" />
       <Button fx:id="buttonregistrar" layoutX="373.0" layoutY="290.0" mnemonicParsing="false" onAction="#onregistrar" text="Registrar" />
       <Button fx:id="buttonmodificar" layoutX="100.0" layoutY="290.0" mnemonicParsing="false" onAction="#onmodificar" text="Modificar" />
-      <Button fx:id="buttoneliminar" layoutX="190.0" layoutY="290.0" mnemonicParsing="false" onAction="#oneliminar" text="Eliminar" />
+      <Button fx:id="buttoneliminar" layoutX="190.0" layoutY="290.0" mnemonicParsing="false" onAction="#onEliminar" text="Eliminar" />
       <Label fx:id="labellist" layoutX="405.0" layoutY="38.0" prefHeight="18.0" prefWidth="125.0" text="Lista de Rocódromos" textAlignment="JUSTIFY" textOverrun="WORD_ELLIPSIS">
          <font>
             <Font name="Calibri" size="13.0" />
