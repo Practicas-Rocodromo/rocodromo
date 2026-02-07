@@ -7,11 +7,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 
-import javax.swing.*;
-import java.awt.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -131,15 +128,13 @@ public class rocodromoController {
     }
 
     @FXML
-    protected void oneliminar(ActionEvent event) {
+    protected void onEliminar(ActionEvent event) {
         //seleccionar listiviewRoco
         //Hacer el null con el if
         //if (seleccionado == null) {
         // labelaviso....
         //lista.remove
         //puedo ingresar un alerta con Alert alert.. verificar en hoteles
-
-
     }
 }
 
