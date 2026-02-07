@@ -6,18 +6,19 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import org.w3c.dom.events.MouseEvent;
+import javafx.scene.input.MouseEvent;
 
+
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.rmi.server.RemoteServer;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
-public class ReservasController {
+import java.time.LocalDate;
+import java.util.*;
+
+public class ReservasController implements Initializable {
 
     // Variables para recoger los datos
     private float precio = 0.0F;
@@ -66,39 +67,53 @@ public class ReservasController {
     // Contructor
     public ReservasController() {
         //Cargar de disco
-        if (Files.exists((Path.of(FileData.RESERVAS_DAT))))
-        {   // if exist
+        if (Files.exists((Path.of(FileData.RESERVAS_DAT)))) {   // if exist
             reservaList = FileData.loadFile(FileData.RESERVAS_DAT);
         } else {
             // inicizar array
             reservaList = new ArrayList<>();
         }
+
     }
 
     // CRUD Reservas (Action BUtton)
     @FXML
     protected void onRegistrar(ActionEvent event) {
         // Chekeo datos
-        if(!checkFields())
+        if (!checkFields())
             return;
         // recoger datos
-        if(!collectData())
+        if (!collectData())
             return;
         // Guardar datos
+        Reserva reserva = new Reserva(precio, nReserva, fechaReserva, estado, tipoPago);
+        reservaList.add(reserva);
         saveFileRefreshReservasList();
         // refrescar listview
         refreshListView(reservaList);
+        // limpiar
+        clearData();
 
     }
 
     @FXML
     protected void onModificar(ActionEvent event) {
         // Chekeo datos
-        if(!checkFields())
+        if (!checkFields())
             return;
         // recoger datos
-        if(!collectData())
+        if (!collectData())
             return;
+        // Busco el dato
+        for (Reserva reserva : reservaList){
+            if (reserva.getnReserva().equals(textfieldnumreserva.getText())) {
+                reserva.setnReserva(nReserva);
+                reserva.setFechaReserva(fechaReserva);
+                reserva.setEstado(estado);
+                reserva.setPrecio(precio);
+                reserva.setTipoPago(tipoPago);
+            }
+        }
         // Guardar datos
         saveFileRefreshReservasList();
         // refrescar listview
@@ -108,7 +123,7 @@ public class ReservasController {
     @FXML
     protected void onEliminar(ActionEvent event) {
         var nReserva = textfieldnumreserva.getText();
-        for(Reserva reserva : reservaList) {
+        for (Reserva reserva : reservaList) {
             if (nReserva.equals(reserva.getnReserva())) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Borrado de datos");
@@ -129,13 +144,13 @@ public class ReservasController {
             }
         }
     }
+
     // Otras funciones
     @FXML
-    protected  void onMouseClickedListView(MouseEvent event) {
+    protected void onMouseClickedListView(MouseEvent event) {
         clearData();
-        for (Reserva numReserva: reservaList) {
-            if (numReserva.getnReserva().equals(listViewReservas.getSelectionModel().getSelectedItem()))
-            {
+        for (Reserva numReserva : reservaList) {
+            if (numReserva.getnReserva().equals(listViewReservas.getSelectionModel().getSelectedItem())) {
                 showDataInField(numReserva.getnReserva());
                 break;
             }
@@ -146,8 +161,7 @@ public class ReservasController {
     // Check datos
     private boolean checkFields() {
         // ver que los dato no están vacíos
-        if (textfieldprecio.getText().isEmpty() || textfieldnumreserva.getText().isEmpty())
-        {
+        if (textfieldprecio.getText().isEmpty() || textfieldnumreserva.getText().isEmpty()) {
             labelAviso.setText("Los campos precio y número de reserva deben tener datos");
             return false;
         }
@@ -173,33 +187,36 @@ public class ReservasController {
 
     // Guardar datos en fichero
     private void saveFileRefreshReservasList() {
-        Reserva reserva = new Reserva(precio,nReserva,fechaReserva,estado,tipoPago);
-        reservaList.add(reserva);
+
         FileData.saveFile(reservaList, FileData.RESERVAS_DAT);
         reservaList = FileData.loadFile(FileData.RESERVAS_DAT);
     }
 
     // Mostrar datos
-    private void showDataInField(String nReserva ) {
-        for( Reserva reserva : reservaList) {
-            // pintar fields
-            textfieldprecio.setText(Float.toString(reserva.getPrecio()));
-            textfieldnumreserva.setText(reserva.getnReserva());
-            textfielestado.setText(reserva.getEstado());
-            textfieldtipopago.setText(reserva.getTipoPago());
-            datepickerfecha.setValue(reserva.getFechaReserva());
+    private void showDataInField(String nReserva) {
+        for (Reserva reserva : reservaList) {
+            if (reserva.getnReserva().equals(nReserva)) {
+                // pintar fields
+                textfieldprecio.setText(Float.toString(reserva.getPrecio()));
+                textfieldnumreserva.setText(reserva.getnReserva());
+                textfielestado.setText(reserva.getEstado());
+                textfieldtipopago.setText(reserva.getTipoPago());
+                datepickerfecha.setValue(reserva.getFechaReserva());
+            }
         }
     }
+
     // Limpiar datos
-    private  void clearData(){
+    private void clearData() {
         textfieldprecio.setText("");
         textfieldnumreserva.setText("");
         textfielestado.setText("");
         textfieldtipopago.setText("");
+        labelAviso.setText("");
         datepickerfecha.setValue(null);
     }
 
-     // Refrescar listview
+    // Refrescar listview
     private void refreshListView(List<Reserva> reservas) {
         // limpiamos lista
         listViewReservas.getItems().clear();
@@ -208,5 +225,10 @@ public class ReservasController {
         }
 
 
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        refreshListView(reservaList);
     }
 }
