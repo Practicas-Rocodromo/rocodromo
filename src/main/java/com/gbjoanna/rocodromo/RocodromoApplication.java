@@ -12,7 +12,7 @@ public class RocodromoApplication extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(RocodromoApplication.class.getResource("base.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+        stage.setTitle("Rocodromo");
         stage.setScene(scene);
         stage.show();
     }
