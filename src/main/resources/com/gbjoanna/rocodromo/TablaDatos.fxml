@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gbjoanna.rocodromo.controller.TablaDatosController">
+   <children>
+      <TableView fx:id="usuarioTable" layoutY="59.0" prefHeight="314.0" prefWidth="278.0">
+        <columns>
+          <TableColumn fx:id="usuarioNombreColumn1" prefWidth="52.0" text="Nombre" />
+          <TableColumn fx:id="usuarioApellidoColumn2" prefWidth="64.79998779296875" text="Apellido" />
+            <TableColumn fx:id="usuarioTelefonoColumn3" prefWidth="60.800048828125" text="Teléfono" />
+            <TableColumn fx:id="usuarioEmailColumn4" prefWidth="47.20001220703125" text="Email" />
+            <TableColumn fx:id="usuarioDniColumn5" prefWidth="40.0" text="Dni" />
+        </columns>
+      </TableView>
+      <TableView fx:id="rocodromosTable" layoutX="280.0" layoutY="59.0" prefHeight="314.0" prefWidth="318.0">
+        <columns>
+          <TableColumn fx:id="rocodromoCodigoColumn1" prefWidth="56.79998779296875" text="Código" />
+          <TableColumn fx:id="rocodromoDireccionColumn2" prefWidth="60.800048828125" text="Dirección" />
+            <TableColumn fx:id="rocodromoCapacidadColumn3" prefWidth="66.39996337890625" text="Capacidad" />
+            <TableColumn fx:id="rocodromoDificultadColumn4" prefWidth="64.7999267578125" text="Dificultad" />
+            <TableColumn fx:id="rocodromoCompletaColumn5" prefWidth="63.9998779296875" text="Completa" />
+        </columns>
+      </TableView>
+      <Label fx:id="usuariosLabel" layoutX="109.0" layoutY="29.0" text="USUARIOS">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="rocodromosLabel" layoutX="376.0" layoutY="24.0" prefHeight="26.0" prefWidth="125.0" text="ROCÓDROMOS">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
