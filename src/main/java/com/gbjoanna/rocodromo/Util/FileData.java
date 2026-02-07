@@ -9,7 +9,7 @@ public class FileData {
     public final static String RESERVAS_DAT = "reservas.dat";
     public final static String ROCODROMO_DAT = "rocodromo.dat";
 
-    // Serializet the object to save
+    // Serializer the object to save
     public static <T> void saveFile(ArrayList<T> objectSave, String nameFile) {
         ObjectOutputStream serializer = null;
         try {
@@ -44,7 +44,7 @@ public class FileData {
             IO.println("El formato del fichero no es el esperado.Error: ");
             e.printStackTrace();
         } catch (IOException e) {
-            IO.println("Se a porducido un error a leer el fichero.Error: ");
+            IO.println("Se a producido un error al leer el fichero.Error: ");
             e.printStackTrace();
         } finally {
             if (deserializador != null) {

@@ -30,6 +30,10 @@ public class Reserva implements Serializable {
                     "Disfrutada"
             )
     );
+
+    public static ArrayList<String> getEstadoReserva() {
+        return estadoReserva;
+    }
     // Crear los tipos de pago
     private static final ArrayList<String> tiposPagos = new ArrayList<>(
             Arrays.asList(
@@ -38,6 +42,9 @@ public class Reserva implements Serializable {
             )
     );
 
+    public static ArrayList<String> getTiposPagos() {
+        return tiposPagos;
+    }
     // getters/setters
     public float getPrecio(){
         return precio;
