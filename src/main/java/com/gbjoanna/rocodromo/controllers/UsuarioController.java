@@ -4,16 +4,19 @@ import com.gbjoanna.rocodromo.Util.FileData;
 import com.gbjoanna.rocodromo.models.Usuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 
-public class UsuarioController {
+public class UsuarioController implements Initializable {
 
     private ArrayList<Usuario> UsuarioList;
 
@@ -122,7 +125,7 @@ public class UsuarioController {
         email = textfieldemail.getText();
         dni = textfielddni.getText();
 
-        if (!dni.matches("d{8}[A-Za-z]")) {
+        if (!dni.matches("\\d{8}[A-Za-z]")) {
             labelaviso.setText("El DNI introducido es erróneo");
             return;
         }
@@ -195,5 +198,10 @@ public class UsuarioController {
         for (Usuario usuarionombre: UsuarioList) {
             listviewusuarios.getItems().add(usuarionombre.getNombre());
         }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        refreshListView(UsuarioList);
     }
 }
