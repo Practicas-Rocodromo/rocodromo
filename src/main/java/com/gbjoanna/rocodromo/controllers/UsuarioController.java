@@ -90,6 +90,9 @@ public class UsuarioController implements Initializable {
             return;
         }
 
+        Usuario usuario = new Usuario(nombre, apellidos, telefono, email, dni);
+        UsuarioList.add(usuario);
+
         saveFileAndRefresh();
 
         limpiaDatos();
@@ -130,6 +133,16 @@ public class UsuarioController implements Initializable {
             return;
         }
 
+        for (Usuario usuarionombre : UsuarioList) {
+            if (usuarionombre.getNombre().equals(textfieldnombre.getText())) {
+                usuarionombre.setNombre(nombre);
+                usuarionombre.setApellidos(apellidos);
+                usuarionombre.setTelefono(telefono);
+                usuarionombre.setEmail(email);
+                usuarionombre.setDni(dni);
+            }
+        }
+
         saveFileAndRefresh();
 
         limpiaDatos();
@@ -164,8 +177,6 @@ public class UsuarioController implements Initializable {
     }
 
     private void saveFileAndRefresh() {
-        Usuario usuario = new Usuario(nombre, apellidos, telefono, email, dni);
-        UsuarioList.add(usuario);
         FileData.saveFile(UsuarioList, FileData.USUARIOS_DAT);
         UsuarioList = FileData.loadFile(FileData.USUARIOS_DAT);
     }
